@@ -1,5 +1,4 @@
-from functools import reduce
-import operator
+from math import prod
 
 # parse data
 data = [line.strip() for line in open("input")]
@@ -13,5 +12,5 @@ print(f"part 1: {result1}")
 
 # do the same just for every of these slopes and multiply the results together
 slopes = [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
-result2 = reduce(operator.mul, [traverse(x) for x in slopes])
+result2 = prod(map(traverse, slopes))
 print(f"part 2: {result2}")

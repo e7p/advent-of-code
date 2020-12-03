@@ -1,12 +1,11 @@
-import itertools
-from functools import reduce
-import operator
+from itertools import combinations
+from math import prod
 
 # parse data
 data = [int(line) for line in open("input")]
 
 # for each combination of n elements, check if they sum to 2020, and if, return the multiplication of these
-checkmul = lambda n: [reduce(operator.mul, x) for x in itertools.combinations(data, n) if sum(x) == 2020]
+checkmul = lambda n: [prod(x) for x in combinations(data, n) if sum(x) == 2020]
 
 # do this for n = 2
 result1 = checkmul(2)
