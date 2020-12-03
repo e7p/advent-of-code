@@ -8,5 +8,5 @@ result1 = sum(x[3].count(x[2]) >= int(x[0]) and x[3].count(x[2]) <= int(x[1]) fo
 print(f"part 1: {result1}")
 
 # count all elements that match the condition that the single character occurs either at position first element or at position second element in the right part
-result2 = sum(bool(x[3][int(x[0]) - 1] == x[2]) ^ bool(x[3][int(x[1]) - 1] == x[2]) for x in data)
+result2 = sum((x[3][int(x[0]) - 1] == x[2]) ^ (x[3][int(x[1]) - 1] == x[2]) for x in data)
 print(f"part 2: {result2}")
