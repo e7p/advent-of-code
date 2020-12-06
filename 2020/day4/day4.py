@@ -15,12 +15,12 @@ required_keys = {
 }
 
 # counts all entries that have as much keys out of the required keys dict as there are in it
-result1 = sum(sum([y in x for y in required_keys]) == len(required_keys) for x in data)
+result1 = sum(all(y in x for y in required_keys) for x in data)
 print(f"part 1: {result1}")
 
 # given a regex match and the limits in a list of two-element tuples, return if the limits match the integer in the string in the groups if not None
-valid_ranges = lambda m, l: m is not None and sum(g is not None and (int(g) < l[i][0] or int(g) > l[i][1]) for i, g in enumerate(m.groups())) == 0
+valid_ranges = lambda m, l: m is not None and not any(g is not None and (int(g) < l[i][0] or int(g) > l[i][1]) for i, g in enumerate(m.groups()))
 
 # counts all entries like in the first part, but additionally check if the validation rules are matched with help of the defined lambda
-result2 = sum(sum(y in x and valid_ranges(re.match(r[0], x[y]), r[1:]) for y, r in required_keys.items()) == len(required_keys) for x in data)
+result2 = sum(all(y in x and valid_ranges(re.match(r[0], x[y]), r[1:]) for y, r in required_keys.items()) for x in data)
 print(f"part 2: {result2}")
