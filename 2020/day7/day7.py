@@ -1,0 +1,35 @@
+import re
+
+# maybe this could be implemented slightly more elegant with the help of zip(), getting rid of the tuples of count and name?
+
+# parse data
+data = [line.strip() for line in open("input") if line != ""]
+
+# pack the data inside a dict of bag names that contains a list of tuples out of count and name of the contents
+bagcontent = lambda m: (int(m.groups()[0]), m.groups()[1])
+bag = lambda m: (m[0], [bagcontent(re.match(r"(\d+) (.+) bags?", x)) for x in m[1].split(", ") if x != "no other bags"])
+datadict = dict(bag(re.match(r"(.+) bags contain (.+)\.$", line).groups()) for line in data)
+
+shinygold_bags = None
+# get the set of bags that contain a number of shiny gold bags
+updated_bags = set(k for k, c in datadict.items() if any(u[1] == "shiny gold" for u in c))
+while updated_bags != shinygold_bags:
+    shinygold_bags = updated_bags
+    # now somewhat recursively (until the set doesn't get extended anymore), get the set of bags that contain the current set of bags
+    updated_bags = shinygold_bags.union(k for content in shinygold_bags for k, c in datadict.items() if any(u[1] == content for u in c))
+
+# the length of these is the result
+result1 = len(shinygold_bags)
+print(f"part 1: {result1}")
+
+shinygold_content = []
+# in the second part, we need to keep track of all recursions so start by filling the bags that the shiny gold bags contain
+updated_content = datadict["shiny gold"]
+while updated_content:
+    shinygold_content.append(updated_content)
+    # now somewhat recursively (until there is no more content), get the contents of the previous recursion of bags and multiply the count with the current content's count
+    updated_content = [(xu * u[0], xv) for u in shinygold_content[-1] for xu, xv in datadict[u[1]]]
+
+# sum everything together
+result2 = sum(u[0] for x in shinygold_content for u in x)
+print(f"part 2: {result2}")
