@@ -1,6 +1,8 @@
 import re
 
 # maybe this could be implemented slightly more elegant with the help of zip(), getting rid of the tuples of count and name?
+# for sure, a truly recursive solution, i.e. by KanegaeGabriel [1] would have been much shorter... well, I started iteratively, so didn't mind
+# [1]: https://github.com/KanegaeGabriel/advent-of-code-2020/blob/main/07_handy_haversacks.py
 
 # parse data
 data = [line.strip() for line in open("input") if line != ""]
@@ -15,7 +17,7 @@ shinygold_bags = None
 updated_bags = set(k for k, c in datadict.items() if any(u[1] == "shiny gold" for u in c))
 while updated_bags != shinygold_bags:
     shinygold_bags = updated_bags
-    # now somewhat recursively (until the set doesn't get extended anymore), get the set of bags that contain the current set of bags
+    # now somewhat iteratively (until the set doesn't get extended anymore), get the set of bags that contain the current set of bags
     updated_bags = shinygold_bags.union(k for content in shinygold_bags for k, c in datadict.items() if any(u[1] == content for u in c))
 
 # the length of these is the result
@@ -23,11 +25,11 @@ result1 = len(shinygold_bags)
 print(f"part 1: {result1}")
 
 shinygold_content = []
-# in the second part, we need to keep track of all recursions so start by filling the bags that the shiny gold bags contain
+# in the second part, we need to keep track of all iterations so start by filling the bags that the shiny gold bags contain, to be able to sum up
 updated_content = datadict["shiny gold"]
 while updated_content:
     shinygold_content.append(updated_content)
-    # now somewhat recursively (until there is no more content), get the contents of the previous recursion of bags and multiply the count with the current content's count
+    # now somewhat iteratively (until there is no more content), get the contents of the previous iteration of bags and multiply the count with the current content's count
     updated_content = [(xu * u[0], xv) for u in shinygold_content[-1] for xu, xv in datadict[u[1]]]
 
 # sum everything together
