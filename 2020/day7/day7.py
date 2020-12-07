@@ -2,7 +2,9 @@ import re
 
 # maybe this could be implemented slightly more elegant with the help of zip(), getting rid of the tuples of count and name?
 # for sure, a truly recursive solution, i.e. by KanegaeGabriel [1] would have been much shorter... well, I started iteratively, so didn't mind
+# and clearly, the nicest short solution credit goes to r0f1's alternative solution [2]
 # [1]: https://github.com/KanegaeGabriel/advent-of-code-2020/blob/main/07_handy_haversacks.py
+# [2]: https://github.com/r0f1/adventofcode2020/blob/master/day07/alt.py
 
 # parse data
 data = [line.strip() for line in open("input") if line != ""]
